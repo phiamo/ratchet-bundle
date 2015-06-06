@@ -203,9 +203,12 @@ class Bridge implements MessageComponentInterface
 
         $this->logger->notice(
             sprintf(
-                'Authenticated <info>#%s</info> (<comment>%s</comment>)',
+                'Authenticated <info>#%s</info> (<comment>%s</comment>, <comment>%s: %s</comment>)',
                 $connection->getId(),
-                $connection->getRemoteAddress()
+                $connection->getRemoteAddress(),
+                $connection->getClient()->getUsername(),
+                $connection->getClient()->getAccessToken()
+
             )
         );
     }
