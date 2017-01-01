@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "cboden/ratchet": "0.2.8"
+        "cboden/ratchet": "0.3.5"
     },
     "autoload": {
         "psr-0": { "P2\\Bundle\\RatchetBundle\\" : "" }
