@@ -11,6 +11,7 @@ namespace P2\Bundle\RatchetBundle\WebSocket\Server;
 
 use P2\Bundle\RatchetBundle\WebSocket\Exception\TimerAlreadyAddedException;
 use P2\Bundle\RatchetBundle\WebSocket\Server\Loop\PeriodicTimerInterface;
+use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 
@@ -87,7 +88,9 @@ class Factory
     public function create()
     {
         $server = IoServer::factory(
-            new WsServer($this->bridge),
+            new HttpServer(
+              new WsServer($this->bridge)
+            ),
             $this->getPort(),
             $this->getAddress()
         );
