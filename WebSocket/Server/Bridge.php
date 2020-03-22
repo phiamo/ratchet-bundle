@@ -106,7 +106,7 @@ class Bridge implements MessageComponentInterface
     public function onError(SocketConnection $conn, \Exception $e)
     {
         $this->connectionManager->closeConnection($conn);
-        $this->logger->error($e->getMessage());
+        $this->logger->error($e->getMessage(), $e->getTrace());
     }
 
     /**
@@ -133,13 +133,13 @@ class Bridge implements MessageComponentInterface
             $this->handle($connection, $payload);
 
         } catch (InvalidPayloadException $e) {
-            $this->logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage(), $e->getTrace());
         } catch (InvalidEventCallException $e) {
-            $this->logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage(), $e->getTrace());
         } catch (NotManagedConnectionException $e) {
-            $this->logger->warning($e->getMessage());
+            $this->logger->warning($e->getMessage(), $e->getTrace());
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getMessage(), $e->getTrace());
             throw new \RuntimeException('An error occurred during server runtime.', 500, $e);
         }
     }
