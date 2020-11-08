@@ -10,8 +10,7 @@
 namespace P2\Bundle\RatchetBundle\WebSocket;
 
 use P2\Bundle\RatchetBundle\WebSocket\Connection\ConnectionInterface;
-use P2\Bundle\RatchetBundle\WebSocket\Payload;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ConnectionEvent
