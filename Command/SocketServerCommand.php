@@ -10,7 +10,7 @@
 namespace P2\Bundle\RatchetBundle\Command;
 
 use P2\Bundle\RatchetBundle\WebSocket\Server\Factory;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class SocketServerCommand
  * @package P2\Bundle\RatchetBundle\Command
  */
-class SocketServerCommand extends ContainerAwareCommand
+class SocketServerCommand extends Command
 {
     /**
      * @var string
@@ -30,14 +30,20 @@ class SocketServerCommand extends ContainerAwareCommand
      * @var string
      */
     const ARG_PORT = 'port';
+    protected static $defaultName = 'socket:server:start';
+    private Factory $factory;
 
-    /**
-     * {@inheritDoc}
-     */
+    public function __construct(
+        Factory $factory
+    )
+    {
+        parent::__construct(self::$defaultName);
+        $this->factory = $factory;
+    }
+
     protected function configure()
     {
         $this
-            ->setName('socket:server:start')
             ->setDescription('Starts a web socket server')
             ->addArgument(static::ARG_PORT, InputArgument::OPTIONAL, 'The port to listen on incoming connections')
             ->addArgument(static::ARG_ADDRESS, InputArgument::OPTIONAL, 'The address to listen on')
@@ -55,24 +61,21 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            /** @var \P2\Bundle\RatchetBundle\WebSocket\Server\Factory $factory */
-            $factory = $this->getContainer()->get('p2_ratchet.websocket.server_factory');
-
             if (null !== $address = $input->getArgument(static::ARG_ADDRESS)) {
-                $factory->setAddress($address);
+                $this->factory->setAddress($address);
             }
 
             if (null !== $port = $input->getArgument(static::ARG_PORT)) {
-                $factory->setPort($port);
+                $this->factory->setPort($port);
             }
 
-            $server = $factory->create();
+            $server = $this->factory->create();
 
             $output->writeln(
                 sprintf(
                     '<info><comment>Ratchet</comment> - listening on %s:%s</info>',
-                    $factory->getAddress(),
-                    $factory->getPort()
+                    $this->factory->getAddress(),
+                    $this->factory->getPort()
                 )
             );
 
