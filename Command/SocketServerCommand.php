@@ -58,7 +58,7 @@ EOT
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             if (null !== $address = $input->getArgument(static::ARG_ADDRESS)) {
